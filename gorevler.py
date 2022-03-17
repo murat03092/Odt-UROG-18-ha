@@ -63,7 +63,10 @@ async def run():
 
 
     print("-- KARE TAMAMLANDI, İKİNCİ GÖREVE 3sn Sonra GEÇİLECEK...")
-
+    print("-- 2 sn bekle")
+    await drone.offboard.set_velocity_body(
+       VelocityBodyYawspeed(0.0, 0.0, 0.0, 0.0))
+    await asyncio.sleep(1.0)
 ######################İKİNCİ GÖREV-- EŞKENAR ÜÇGEN ÇİZİMİ######################
     for tur in range (1,6,1):
                 print(f'{tur}. Tur Yapılıyor..')
