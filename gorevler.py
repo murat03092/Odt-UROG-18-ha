@@ -12,8 +12,8 @@ async def run():
     
     
     drone = System()
-    await drone.connect(system_address="udp://:14540")
-
+    #await drone.connect(system_address="udp://:14540")
+    await drone.connect(system_address="serial:///dev/ttyACM0:57600")
     print("bağlantı bekleniyor")
     async for state in drone.core.connection_state():
         if state.is_connected:
@@ -41,17 +41,16 @@ async def run():
         await drone.action.disarm()
         return
 
-
-
+#######################BİRİNCİ GÖREV-- KÜP ÇİZİMİ###########################
     ilerigeri = [1,0,-1,0,0,1,0,-1,0,1,0,0,0,-1,0]
     sagsol=[0,1,0,-1,0,0,1,0,-1,0,0,1,0,0,0]
     yukariasagi = [0,0,0,0,-1,0,0,0,0,0,1,0,-1,0,1]
     hizyatay = 3.8
-    hizdikey = 2.8
+    hizdikey = 2.9
     zaman = [hizyatay,hizyatay,hizyatay,hizyatay,hizdikey,hizyatay,hizyatay,hizyatay,
              hizyatay,hizyatay,hizdikey,hizyatay,hizdikey,hizyatay,hizdikey]
-    yönerge =["ileri","sag","geri","sol","yukari","ileri","sag","geri","sol","ileri","asagi","sag",
-                 "yukari","geri","asagi"]
+    yönerge =["ileri","sag","geri","sol","yukari","ileri","sag","geri","sol","ileri","asagi (1. dikme)","sag",
+                 "yukari (2. dikme)","geri","asagi (3. Dikme )"]
     for sira in range(0,15,1):
            print(f'5 metre {yönerge[sira]} gidecek')
            await drone.offboard.set_velocity_body(
@@ -65,10 +64,7 @@ async def run():
 
     print("-- KARE TAMAMLANDI, İKİNCİ GÖREVE 3sn Sonra GEÇİLECEK...")
 
-
-
-
-    
+######################İKİNCİ GÖREV-- EŞKENAR ÜÇGEN ÇİZİMİ######################
     for tur in range (1,6,1):
                 print(f'{tur}. Tur Yapılıyor..')
                 for a in range (0,9,1):
@@ -131,15 +127,15 @@ async def run():
         VelocityBodyYawspeed(0.0, 0.0, 0.0, 0.0))
     await asyncio.sleep(1)
 
-    print("-- Stopping offboard")
+    print("-- Offboar Mode Durdu")
     try:
         await drone.offboard.stop()
     except OffboardError as error:
-        print(f"Stopping offboard mode failed with error code: \
-              {error._result.result}")
-
+        print(f"Offboar mode baslatılması : \
+              {error._result.result} nedeniyle hata verdi..")
+    print("-- Landing")
+    await drone.action.land()
 
 if __name__ == "__main__":
     loop = asyncio.get_event_loop()
     loop.run_until_complete(run())
-
