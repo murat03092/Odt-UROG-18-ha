@@ -45,7 +45,7 @@ async def run():
     ilerigeri = [1,0,-1,0,0,1,0,-1,0,1,0,0,0,-1,0]
     sagsol=[0,1,0,-1,0,0,1,0,-1,0,0,1,0,0,0]
     yukariasagi = [0,0,0,0,-1,0,0,0,0,0,1,0,-1,0,1]
-    hizyatay = 3.8
+    hizyatay = 3.3
     hizdikey = 2.9
     zaman = [hizyatay,hizyatay,hizyatay,hizyatay,hizdikey,hizyatay,hizyatay,hizyatay,
              hizyatay,hizyatay,hizdikey,hizyatay,hizdikey,hizyatay,hizdikey]
