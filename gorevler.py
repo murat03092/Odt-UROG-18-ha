@@ -45,7 +45,7 @@ async def run():
     ilerigeri = [1,0,-1,0,0,1,0,-1,0,1,0,0,0,-1,0]
     sagsol=[0,1,0,-1,0,0,1,0,-1,0,0,1,0,0,0]
     yukariasagi = [0,0,0,0,-1,0,0,0,0,0,1,0,-1,0,1]
-    hizyatay = 3.3
+    hizyatay = 3.2
     hizdikey = 2.9
     zaman = [hizyatay,hizyatay,hizyatay,hizyatay,hizdikey,hizyatay,hizyatay,hizyatay,
              hizyatay,hizyatay,hizdikey,hizyatay,hizdikey,hizyatay,hizdikey]
@@ -68,7 +68,7 @@ async def run():
        VelocityBodyYawspeed(0.0, 0.0, 0.0, 0.0))
     await asyncio.sleep(1.0)
 ######################İKİNCİ GÖREV-- EŞKENAR ÜÇGEN ÇİZİMİ######################
-    for tur in range (1,6,1):
+    for tur in range (1,4,1):
                 print(f'{tur}. Tur Yapılıyor..')
                 for a in range (0,9,1):
                         aci = (60*(math.sin(a*10*(math.pi/180))))
