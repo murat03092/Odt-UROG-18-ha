@@ -1,0 +1,79 @@
+#!/usr/bin/env python3
+
+
+import asyncio
+import time
+
+from mavsdk import System
+from mavsdk.offboard import (OffboardError, VelocityBodyYawspeed, VelocityNedYaw)
+
+
+async def run():
+    """ Does Offboard control using velocity body coordinates. """
+    
+    drone = System()
+    await drone.connect(system_address="udp://:14540")
+
+    print("Waiting for drone to connect...")
+    async for state in drone.core.connection_state():
+        if state.is_connected:
+            print(f"Drone discovered!")
+            break
+
+    print("-- Arming")
+    await drone.action.arm()
+    print("-- Taking off")
+    await drone.action.takeoff()
+    await asyncio.sleep(4)
+    time.sleep(6)
+
+    print("-- Setting initial setpoint")
+    await drone.offboard.set_velocity_body(
+        VelocityBodyYawspeed(0.0, 0.0, 0.0, 0.0))
+
+    print("-- Starting offboard")
+    try:
+        await drone.offboard.start()
+    except OffboardError as error:
+        print(f"Starting offboard mode failed with error code: \
+              {error._result.result}")
+        print("-- Disarming")
+        await drone.action.disarm()
+        return
+################################################################
+    a = 0
+    print("-- uçgen 1")
+    for a in range(5):
+
+            list1 = [5,24,43,58,65]
+            await drone.offboard.set_velocity_ned(VelocityNedYaw(0.0, 0.0, 0.0, list1[a] ))
+            await asyncio.sleep(1.0)
+	    #print("-- Fly a circle sideways")
+            await drone.offboard.set_velocity_ned(
+		VelocityNedYaw(1.0, -1.0, 0.0, list1[a]))
+            await asyncio.sleep(0.8)
+            
+            print("Uçgen-1 Yazılan Açı:", list1[a])
+            a=a+1
+            
+    print("-- Wait for a bit")
+    await drone.offboard.set_velocity_body(
+        VelocityBodyYawspeed(0.0, 0.0, 0.0, 0.0))
+    await asyncio.sleep(2)
+
+    print("-- Wait for a bit")
+    await drone.offboard.set_velocity_body(
+        VelocityBodyYawspeed(0.0, 0.0, 0.0, 0.0))
+    await asyncio.sleep(5)
+
+    print("-- Stopping offboard")
+    try:
+        await drone.offboard.stop()
+    except OffboardError as error:
+        print(f"Stopping offboard mode failed with error code: \
+              {error._result.result}")
+
+
+if __name__ == "__main__":
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(run())

@@ -1,0 +1,62 @@
+
+################################################################
+    a = 0
+    print("-- uçgen 1")
+    for a in range(5):
+
+            list1 = [5,24,43,58,65]
+            await drone.offboard.set_velocity_ned(VelocityNedYaw(0.0, 0.0, 0.0, list1[a] ))
+            await asyncio.sleep(1.0)
+	    #print("-- Fly a circle sideways")
+            await drone.offboard.set_velocity_ned(
+		VelocityNedYaw(1.0, -1.0, 0.0, list1[a]))
+            await asyncio.sleep(0.8)
+            
+            print("Uçgen-1 Yazılan Açı:", list1[a])
+            a=a+1
+            
+    print("-- Wait for a bit")
+    await drone.offboard.set_velocity_body(
+        VelocityBodyYawspeed(0.0, 0.0, 0.0, 0.0))
+    await asyncio.sleep(2)
+
+
+
+###################################################################3
+    b = 0
+    print("-- uçgen 2")
+    for b in range(10):
+            list2 = [115,120,140,142,162,178,197,217,227,230,]
+            await drone.offboard.set_velocity_ned(VelocityNedYaw(0.0, 0.0, 0.0, list2[b] ))
+            await asyncio.sleep(1.0)
+	    #print("-- Fly a circle sideways")
+            await drone.offboard.set_velocity_ned(
+		VelocityNedYaw(0.0, 1.0, 0.0, list2[b]))
+            await asyncio.sleep(0.8)
+            
+            print("Uçgen-2 Yazılan Açı:", list2[b])
+            b=b+1
+    print("-- Wait for a bit")
+    await drone.offboard.set_velocity_body(
+        VelocityBodyYawspeed(0.0, 0.0, 0.0, 0.0))
+    await asyncio.sleep(2)         
+#############################################################################
+    c = 0
+    print("-- uçgen 3")
+    for c in range(5):
+            list3 = [250,268,292,323,358]
+            await drone.offboard.set_velocity_ned(VelocityNedYaw(0.0, 0.0, 0.0, list3[c] ))
+            await asyncio.sleep(0.8)
+	    #print("-- Fly a circle sideways")
+            await drone.offboard.set_velocity_ned(
+		VelocityNedYaw(-1.0, -1.0, 0.0, list3[c]))
+            await asyncio.sleep(0.79)
+            
+            print("Uçgen-3 Yazılan Açı:", list3[c])
+            c=c+1
+    print("-- Wait for a bit")
+    await drone.offboard.set_velocity_body(
+        VelocityBodyYawspeed(0.0, 0.0, 0.0, 0.0))
+    await asyncio.sleep(2)          
+###############################################################################
+    
