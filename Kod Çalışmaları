@@ -1,1 +1,143 @@
+#!/usr/bin/env python3
 
+
+import asyncio
+import time
+import math
+from mavsdk import System
+from mavsdk.offboard import (OffboardError, VelocityBodyYawspeed, VelocityNedYaw)
+
+
+async def run():
+    """ Does Offboard control using velocity body coordinates. """
+    
+    drone = System()
+    await drone.connect(system_address="udp://:14540")
+
+    print("Waiting for drone to connect...")
+    async for state in drone.core.connection_state():
+        if state.is_connected:
+            print(f"Drone discovered!")
+            break
+
+    print("-- Arming")
+    await drone.action.arm()
+    print("-- Taking off")
+    await drone.action.takeoff()
+    await asyncio.sleep(4)
+    time.sleep(6)
+
+    print("-- Setting initial setpoint")
+    await drone.offboard.set_velocity_body(
+        VelocityBodyYawspeed(0.0, 0.0, 0.0, 0.0))
+
+    print("-- Starting offboard")
+    try:
+        await drone.offboard.start()
+    except OffboardError as error:
+        print(f"Starting offboard mode failed with error code: \
+              {error._result.result}")
+        print("-- Disarming")
+        await drone.action.disarm()
+        return
+
+    for g in range (4):
+                for a in range (0,9,1):
+                        aci = 60*(math.sin(a*10*(math.pi/180)))
+                        hiz = 0.99+(0.3*(math.cos(a*10*(math.pi/180))))
+                        await drone.offboard.set_velocity_ned(
+                              VelocityNedYaw(hiz*0.866, -hiz*0.5, 0.0, aci))
+                        await asyncio.sleep(0.37)
+                        print("Uçgen-1 Yazılan Açı:", aci)
+                for b in range (10,19,1):
+			#listaci=[0.055,0.110,0.165,0.220,0.275,0.330,0.385,0.440,0.495,0.550,0.605,0.660,0.715,0.770,0.825,0.880,0.935,0.990]
+                        aci2 = 60*(2-(math.sin(b*10*(math.pi/180))))
+                        hiz2 = 0.99+(0.3*(math.cos(b*10*(math.pi/180))))
+			#print(f'liste değeri:  {b}, Açı Değeri:  {aci2}')
+			#time.sleep(1)
+			#listaci=[0.055,0.110,0.165,0.220,0.275,0.330,0.385,0.440,0.495,0.550,0.605,0.660,0.715,0.770,0.825,0.880,0.935,0.990]
+		        #aci = 60*(math.sin(a*10*(math.pi/180)))
+			#print(f'liste değeri:  {a}, Açı Değeri:  {aci}')
+			
+			
+		        #await drone.offboard.set_velocity_ned(VelocityNedYaw(0.0, 0.0, 0.0, aci2 ))
+		        #await asyncio.sleep(0.15)
+		        #print("-- Fly a circle sideways")
+                        await drone.offboard.set_velocity_ned(
+			   VelocityNedYaw(hiz2*0.866, -hiz2*0.5, 0.0, aci2))
+                        await asyncio.sleep(0.37)
+##############################################################################################################################
+                for c in range (0,9,1):
+                        aci3 = (120+(60*(math.sin(c*10*(math.pi/180)))))
+			#print(f'liste değeri:  {a}, Açı Değeri:  {aci}')
+                        hiz3 = 1.0+(0.4*(math.cos(c*10*(math.pi/180))))
+		        #await drone.offboard.set_velocity_ned(VelocityNedYaw(0.0, 0.0, 0.0, aci ))
+		        #await asyncio.sleep(0.15)
+		    #print("-- Fly a circle sideways")
+                        await drone.offboard.set_velocity_ned(
+			   VelocityNedYaw(0.0, hiz3, 0.0, aci3))
+                        await asyncio.sleep(0.37)
+                        print("Uçgen-1 Yazılan Açı:", aci)
+                for d in range (10,19,1):
+			#listaci=[0.055,0.110,0.165,0.220,0.275,0.330,0.385,0.440,0.495,0.550,0.605,0.660,0.715,0.770,0.825,0.880,0.935,0.990]
+                        aci4 = (120+(60*(2-(math.sin(d*10*(math.pi/180))))))
+                        hiz4 = 1.0+(0.4*(math.cos(d*10*(math.pi/180))))
+			#print(f'liste değeri:  {b}, Açı Değeri:  {aci2}')
+			#time.sleep(1)
+			#listaci=[0.055,0.110,0.165,0.220,0.275,0.330,0.385,0.440,0.495,0.550,0.605,0.660,0.715,0.770,0.825,0.880,0.935,0.990]
+		        #aci = 60*(math.sin(a*10*(math.pi/180)))
+			#print(f'liste değeri:  {a}, Açı Değeri:  {aci}')
+		        #await drone.offboard.set_velocity_ned(VelocityNedYaw(0.0, 0.0, 0.0, aci2 ))
+		        #await asyncio.sleep(0.15)
+		    #print("-- Fly a circle sideways")
+                        await drone.offboard.set_velocity_ned(
+			   VelocityNedYaw(0.0, hiz4, 0.0, aci4))
+                        await asyncio.sleep(0.37)    
+###############################################################################
+                for e in range (0,9,1):
+                        aci5 = 240+60*(math.sin(e*10*(math.pi/180)))
+                        hiz5 = 0.99+(0.3*(math.cos(3*10*(math.pi/180))))
+		        #await drone.offboard.set_velocity_ned(VelocityNedYaw(0.0, 0.0, 0.0, aci ))
+		        #await asyncio.sleep(0.15)
+		    #print("-- Fly a circle sideways")
+                        await drone.offboard.set_velocity_ned(
+			   VelocityNedYaw(-hiz5*0.866, -hiz5*0.5, 0.0, aci5))
+                        await asyncio.sleep(0.37)
+                        print("Uçgen-1 Yazılan Açı:", aci5)
+                for f in range (10,19,1):
+			#listaci=[0.055,0.110,0.165,0.220,0.275,0.330,0.385,0.440,0.495,0.550,0.605,0.660,0.715,0.770,0.825,0.880,0.935,0.990]
+                        aci6 = 240+60*(2-(math.sin(f*10*(math.pi/180))))
+                        hiz6 = 0.99+(0.3*(math.cos(f*10*(math.pi/180))))
+			#print(f'liste değeri:  {b}, Açı Değeri:  {aci2}')
+			#time.sleep(1)
+			#listaci=[0.055,0.110,0.165,0.220,0.275,0.330,0.385,0.440,0.495,0.550,0.605,0.660,0.715,0.770,0.825,0.880,0.935,0.990]
+		        #aci = 60*(math.sin(a*10*(math.pi/180)))
+			#print(f'liste değeri:  {a}, Açı Değeri:  {aci}')
+		        #await drone.offboard.set_velocity_ned(VelocityNedYaw(0.0, 0.0, 0.0, aci2 ))
+		        #await asyncio.sleep(0.15)
+		    #print("-- Fly a circle sideways")
+                        await drone.offboard.set_velocity_ned(
+			   VelocityNedYaw(-hiz6*0.866, -hiz6*0.5, 0.0, aci6))
+                        await asyncio.sleep(0.37)
+                print("-- Wait for a bit")
+                await drone.offboard.set_velocity_body(
+                     VelocityBodyYawspeed(0.0, 0.0, 0.0, 0.0))
+                await asyncio.sleep(0.5)
+                g=g+1
+
+    print("-- Wait for a bit")
+    await drone.offboard.set_velocity_body(
+        VelocityBodyYawspeed(0.0, 0.0, 0.0, 0.0))
+    await asyncio.sleep(2)
+
+    print("-- Stopping offboard")
+    try:
+        await drone.offboard.stop()
+    except OffboardError as error:
+        print(f"Stopping offboard mode failed with error code: \
+              {error._result.result}")
+
+
+if __name__ == "__main__":
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(run())
